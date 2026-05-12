@@ -1,16 +1,19 @@
 package Model;
 
-public class Menu {
+public class MenuItem {
+
     private int id;
     private String name;
     private double price;
 
-    public Menu(int id, String name, double price) {
+    // Constructor
+    public MenuItem(int id, String name, double price) {
         this.id = id;
         this.name = name;
         this.price = price;
     }
 
+    // Getters
     public int getId() {
         return id;
     }
@@ -23,11 +26,24 @@ public class Menu {
         return price;
     }
 
+    // Setters
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public void setName(String name) {
         this.name = name;
     }
 
     public void setPrice(double price) {
         this.price = price;
+    }
+
+    // toString
+    @Override
+    public String toString() {
+        return "ID: " + id +
+                ", Name: " + name +
+                ", Price: " + price;
     }
 }
