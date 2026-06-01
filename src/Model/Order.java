@@ -1,76 +1,77 @@
 package Model;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+
 public class Order {
 
-    // Attributes
+    public static final String STATUS_PENDING   = "Pending";
+    public static final String STATUS_PREPARING = "Preparing";
+    public static final String STATUS_READY     = "Ready";
+    public static final String STATUS_SERVED    = "Served";
+    public static final String STATUS_CANCELLED = "Cancelled";
+
     private int orderId;
-    private String customerName;
-    private String itemName;
-    private int quantity;
-    private double totalPrice;
+    private int tableId;
+    private int waiterId;
+    private String status;
+    private LocalDateTime orderTime;
+    private String specialInstructions;
+    private List<OrderItem> items;
 
-    // Constructor
-    public Order(int orderId, String customerName,
-                 String itemName, int quantity,
-                 double totalPrice) {
-
-        this.orderId = orderId;
-        this.customerName = customerName;
-        this.itemName = itemName;
-        this.quantity = quantity;
-        this.totalPrice = totalPrice;
+    public Order() {
+        this.items     = new ArrayList<>();
+        this.orderTime = LocalDateTime.now();
+        this.status    = STATUS_PENDING;
     }
 
-    // Getters
-    public int getOrderId() {
-        return orderId;
+    public Order(int orderId, int tableId, int waiterId,
+                 String status, LocalDateTime orderTime, String specialInstructions) {
+        this.orderId             = orderId;
+        this.tableId             = tableId;
+        this.waiterId            = waiterId;
+        this.status              = status;
+        this.orderTime           = orderTime;
+        this.specialInstructions = specialInstructions;
+        this.items               = new ArrayList<>();
     }
 
-    public String getCustomerName() {
-        return customerName;
+    public double calculateTotal() {
+        double total = 0;
+        for (OrderItem item : items) {
+            total += item.getSubtotal();
+        }
+        return total;
     }
 
-    public String getItemName() {
-        return itemName;
-    }
+    public void addItem(OrderItem item)    { items.add(item); }
+    public void removeItem(OrderItem item) { items.remove(item); }
 
-    public int getQuantity() {
-        return quantity;
-    }
+    // Getters & Setters
+    public int getOrderId()                          { return orderId; }
+    public void setOrderId(int id)                   { this.orderId = id; }
 
-    public double getTotalPrice() {
-        return totalPrice;
-    }
+    public int getTableId()                          { return tableId; }
+    public void setTableId(int id)                   { this.tableId = id; }
 
-    // Setters
-    public void setOrderId(int orderId) {
-        this.orderId = orderId;
-    }
+    public int getWaiterId()                         { return waiterId; }
+    public void setWaiterId(int id)                  { this.waiterId = id; }
 
-    public void setCustomerName(String customerName) {
-        this.customerName = customerName;
-    }
+    public String getStatus()                        { return status; }
+    public void setStatus(String status)             { this.status = status; }
 
-    public void setItemName(String itemName) {
-        this.itemName = itemName;
-    }
+    public LocalDateTime getOrderTime()              { return orderTime; }
+    public void setOrderTime(LocalDateTime time)     { this.orderTime = time; }
 
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
-    }
+    public String getSpecialInstructions()           { return specialInstructions; }
+    public void setSpecialInstructions(String instr) { this.specialInstructions = instr; }
 
-    public void setTotalPrice(double totalPrice) {
-        this.totalPrice = totalPrice;
-    }
+    public List<OrderItem> getItems()                { return items; }
+    public void setItems(List<OrderItem> items)      { this.items = items; }
 
-    // toString Method
     @Override
     public String toString() {
-
-        return "Order ID: " + orderId +
-                ", Customer Name: " + customerName +
-                ", Item Name: " + itemName +
-                ", Quantity: " + quantity +
-                ", Total Price: " + totalPrice;
+        return "Order #" + orderId + " | Table: " + tableId + " | Status: " + status;
     }
 }

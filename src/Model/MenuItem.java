@@ -2,48 +2,56 @@ package Model;
 
 public class MenuItem {
 
-    private int id;
+    // Categories for a Pakistani restaurant
+    public static final String CAT_STARTERS    = "Starters";
+    public static final String CAT_MAIN_COURSE = "Main Course";
+    public static final String CAT_BIRYANI     = "Biryani & Rice";
+    public static final String CAT_BREADS      = "Breads";
+    public static final String CAT_SIDES       = "Side Dishes";
+    public static final String CAT_DESSERTS    = "Desserts";
+    public static final String CAT_DRINKS      = "Drinks";
+    public static final String CAT_BBQ         = "BBQ & Grills";
+
+    private int itemId;
     private String name;
+    private String category;
     private double price;
+    private String description;
+    private boolean available;
 
-    // Constructor
-    public MenuItem(int id, String name, double price) {
-        this.id = id;
-        this.name = name;
-        this.price = price;
+    public MenuItem() {}
+
+    public MenuItem(int itemId, String name, String category,
+                    double price, String description, boolean available) {
+        this.itemId      = itemId;
+        this.name        = name;
+        this.category    = category;
+        this.price       = price;
+        this.description = description;
+        this.available   = available;
     }
 
-    // Getters
-    public int getId() {
-        return id;
-    }
+    // Getters & Setters
+    public int getItemId()                   { return itemId; }
+    public void setItemId(int id)            { this.itemId = id; }
 
-    public String getName() {
-        return name;
-    }
+    public String getName()                  { return name; }
+    public void setName(String name)         { this.name = name; }
 
-    public double getPrice() {
-        return price;
-    }
+    public String getCategory()              { return category; }
+    public void setCategory(String cat)      { this.category = cat; }
 
-    // Setters
-    public void setId(int id) {
-        this.id = id;
-    }
+    public double getPrice()                 { return price; }
+    public void setPrice(double price)       { this.price = price; }
 
-    public void setName(String name) {
-        this.name = name;
-    }
+    public String getDescription()           { return description; }
+    public void setDescription(String desc)  { this.description = desc; }
 
-    public void setPrice(double price) {
-        this.price = price;
-    }
+    public boolean isAvailable()             { return available; }
+    public void setAvailable(boolean avail)  { this.available = avail; }
 
-    // toString
     @Override
     public String toString() {
-        return "ID: " + id +
-                ", Name: " + name +
-                ", Price: " + price;
+        return name + " (" + category + ") - Rs. " + price;
     }
 }
