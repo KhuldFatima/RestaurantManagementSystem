@@ -1,56 +1,25 @@
 package Service;
 
-import controller.MenuController;
-import model.MenuItem;
-import util.Validator;
-
+import Model.MenuItem;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class MenuService {
-    private MenuController menuController = new MenuController();
+    private List<MenuItem> localMenu = new ArrayList<>();
 
-    public List<MenuItem> getAllItems() {
-        return menuController.getAllMenuItems();
+    public MenuService() {
+        // Populating with traditional Pakistani menu items (Prices in PKR)
+        localMenu.add(new MenuItem(1, "Chicken Makhni Handi (Half)", "Karahi", 1450.0));
+        localMenu.add(new MenuItem(2, "Mutton Peshawari Karahi (Full)", "Karahi", 3200.0));
+        localMenu.add(new MenuItem(3, "Beef Seekh Kebab (4 Pcs)", "BBQ", 850.0));
+        localMenu.add(new MenuItem(4, "Chicken Tikka Piece (Leg)", "BBQ", 420.0));
+        localMenu.add(new MenuItem(5, "Mutton Dum Biryani", "Rice", 780.0));
+        localMenu.add(new MenuItem(6, "Garlic Naan / Roghni Naan", "Tandoor", 90.0));
+        localMenu.add(new MenuItem(7, "Mint Raita & Fresh Salad", "Sides", 180.0));
+        localMenu.add(new MenuItem(8, "Pakola / Soft Drink Can", "Drinks", 120.0));
     }
 
-    public List<MenuItem> getAvailableItems() {
-        return menuController.getAllMenuItems()
-                .stream()
-                .filter(MenuItem::isAvailable)
-                .collect(Collectors.toList());
-    }
-
-    public List<MenuItem> getItemsByCategory(String category) {
-        return menuController.getAllMenuItems()
-                .stream()
-                .filter(item -> item.getCategory().equalsIgnoreCase(category))
-                .collect(Collectors.toList());
-    }
-
-    // Returns error message string, or null if success
-    public String addItem(String name, String priceText, String category) {
-        if (Validator.isNullOrEmpty(name))     return "Item name is required.";
-        if (!Validator.isValidPrice(priceText)) return "Invalid price. Must be a positive number.";
-        if (Validator.isNullOrEmpty(category)) return "Category is required.";
-
-        double price = Double.parseDouble(priceText.trim());
-        boolean success = menuController.addMenuItem(name.trim(), price, category.trim());
-        return success ? null : "Failed to add item. Please try again.";
-    }
-
-    // Returns error message string, or null if success
-    public String deleteItem(int id) {
-        if (id <= 0) return "Invalid item selected.";
-        boolean success = menuController.deleteMenuItem(id);
-        return success ? null : "Failed to delete item.";
-    }
-
-    public MenuItem findById(int id) {
-        return menuController.getAllMenuItems()
-                .stream()
-                .filter(item -> item.getId() == id)
-                .findFirst()
-                .orElse(null);
+    public List<MenuItem> getAllMenuItems() {
+        return localMenu;
     }
 }

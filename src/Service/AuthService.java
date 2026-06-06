@@ -1,8 +1,8 @@
 package Service;
 
-import controller.AuthController;
-import model.User;
-import util.Validator;
+import Controller.AuthController;
+import Model.User;
+import Util.Validator;
 
 public class AuthService {
     private AuthController authController = new AuthController();
