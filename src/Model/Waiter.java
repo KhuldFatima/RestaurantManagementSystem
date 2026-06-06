@@ -1,22 +1,29 @@
 package Model;
 
-public class Waiter extends Staff {
-
-    private int assignedTableId;
+public class Waiter {
+    private int waiterId;
+    private String name;
+    private int assignedTableNumber;
+    private boolean isAvailable;
 
     public Waiter() {}
 
-    public Waiter(int staffId, String name, String phone, String email,
-                  String password, double salary, String status, int assignedTableId) {
-        super(staffId, name, phone, email, password, "Waiter", salary, status);
-        this.assignedTableId = assignedTableId;
+    public Waiter(int waiterId, String name, int assignedTableNumber, boolean isAvailable) {
+        this.waiterId = waiterId;
+        this.name = name;
+        this.assignedTableNumber = assignedTableNumber;
+        this.isAvailable = isAvailable;
     }
 
-    @Override
-    public String getDuties() {
-        return "Take orders from customers, serve food, handle table requests.";
-    }
+    public int getWaiterId() { return waiterId; }
+    public void setWaiterId(int waiterId) { this.waiterId = waiterId; }
 
-    public int getAssignedTableId()          { return assignedTableId; }
-    public void setAssignedTableId(int t)    { this.assignedTableId = t; }
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
+
+    public int getAssignedTableNumber() { return assignedTableNumber; }
+    public void setAssignedTableNumber(int assignedTableNumber) { this.assignedTableNumber = assignedTableNumber; }
+
+    public boolean isAvailable() { return isAvailable; }
+    public void setAvailable(boolean available) { isAvailable = available; }
 }
