@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zauq Restaurant Management System</title>
+    <style>
+        :root {
+            --primary: #1e4620; /* Deep traditional green */
+            --accent: #d4af37;  /* Elegant Gold */
+            --dark: #2c2c2c;
+            --light: #f9f9f9;
+        }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; background: #f4f4f6; color: var(--dark); }
+        header { background: var(--primary); color: white; padding: 20px; text-align: center; border-bottom: 4px solid var(--accent); }
+        .promo-banner { background: var(--accent); color: #000; text-align: center; padding: 8px; font-weight: bold; font-size: 0.95rem; }
+        .container { display: flex; max-width: 1200px; margin: 20px auto; gap: 20px; padding: 0 15px; }
+        .menu-section { flex: 2; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+        .cart-section { flex: 1; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); height: fit-content; }
+        .menu-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 15px; margin-top: 15px; }
+        .menu-card { border: 1px solid #e1e1e1; padding: 15px; border-radius: 6px; text-align: center; transition: 0.2s; }
+        .menu-card:hover { border-color: var(--primary); transform: translateY(-2px); }
+        .menu-card h4 { margin: 10px 0 5px 0; font-size: 1.1rem; }
+        .price { color: var(--primary); font-weight: bold; margin-bottom: 10px; }
+        .btn { background: var(--primary); color: white; border: none; padding: 8px 15px; border-radius: 4px; cursor: pointer; width: 100%; font-weight: bold; }
+        .btn:hover { background: #153317; }
+        .cart-item { display: flex; justify-content: space-between; margin-bottom: 10px; padding-bottom: 10px; border-bottom: 1px solid #eee; }
+        .summary-row { display: flex; justify-content: space-between; margin: 8px 0; font-size: 0.95rem; }
+        .total-row { font-size: 1.2rem; font-weight: bold; color: var(--primary); border-top: 2px dashed #ccc; padding-top: 10px; }
+        select, input { width: 100%; padding: 8px; margin: 5px 0 15px 0; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>ZAUQ RESTAURANT</h1>
+    <p>Premium Pakistani Culinary Experience</p>
+</header>
+
+<div class="promo-banner">
+    ✨ 10% off on Askari & Meezan Cards | 5% off on the First Wednesday of the Month! (16% GST applies)
+</div>
+
+<div class="container">
+    <div class="menu-section">
+        <h2>Traditional Menu</h2>
+        <div class="menu-grid" id="menu-container">
+        </div>
+    </div>
+
+    <div class="cart-section">
+        <h2>Current Order</h2>
+        <div id="cart-items">
+            <p style="color: #888; text-align: center;">No items selected yet.</p>
+        </div>
+
+        <label for="payment-method"><strong>Payment Method:</strong></label>
+        <select id="payment-method" onchange="recalculateBill()">
+            <option value="CASH">Cash on Delivery</option>
+            <option value="MEEZAN">Meezan Bank Card (10% Off)</option>
+            <option value="ASKARI">Askari Bank Card (10% Off)</option>
+            <option value="OTHER_CARD">Other Bank Card</option>
+        </select>
+
+        <label for="order-date"><strong>Simulation Date:</strong></label>
+        <input type="date" id="order-date" onchange="recalculateBill()">
+
+        <div class="summary-row">
+            <span>Subtotal:</span>
+            <span id="bill-subtotal">PKR 0.00</span>
+        </div>
+        <div class="summary-row" style="color: red;">
+            <span>Discount Applied:</span>
+            <span id="bill-discount">0%</span>
+        </div>
+        <div class="summary-row">
+            <span>GST (16%):</span>
+            <span id="bill-tax">PKR 0.00</span>
+        </div>
+        <div class="summary-row total-row">
+            <span>Total Payable:</span>
+            <span id="bill-total">PKR 0.00</span>
+        </div>
+        <button class="btn" style="margin-top: 15px;" onclick="alert('Order Sent to Kitchen!')">Place Order</button>
+    </div>
+</div>
+
+<script src="js/Menu.js"></script>
+<script src="js/Orders.js"></script>
+</body>
+</html>
