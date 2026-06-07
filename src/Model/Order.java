@@ -5,73 +5,49 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Order {
-
-    public static final String STATUS_PENDING   = "Pending";
-    public static final String STATUS_PREPARING = "Preparing";
-    public static final String STATUS_READY     = "Ready";
-    public static final String STATUS_SERVED    = "Served";
-    public static final String STATUS_CANCELLED = "Cancelled";
-
     private int orderId;
-    private int tableId;
-    private int waiterId;
-    private String status;
+    private int tableNumber;
+    private List<OrderItem> items = new ArrayList<>();
+    private double subtotal;
+    private double discountAmount;
+    private double taxAmount; // 16% PST/GST standard
+    private double totalAmount;
+    private String paymentMethod; // "CASH", "ASKARI", "MEEZAN"
     private LocalDateTime orderTime;
-    private String specialInstructions;
-    private List<OrderItem> items;
+    private String status; // "PENDING", "COMPLETED", "CANCELLED"
 
     public Order() {
-        this.items     = new ArrayList<>();
         this.orderTime = LocalDateTime.now();
-        this.status    = STATUS_PENDING;
+        this.status = "PENDING";
     }
 
-    public Order(int orderId, int tableId, int waiterId,
-                 String status, LocalDateTime orderTime, String specialInstructions) {
-        this.orderId             = orderId;
-        this.tableId             = tableId;
-        this.waiterId            = waiterId;
-        this.status              = status;
-        this.orderTime           = orderTime;
-        this.specialInstructions = specialInstructions;
-        this.items               = new ArrayList<>();
-    }
+    public int getOrderId() { return orderId; }
+    public void setOrderId(int orderId) { this.orderId = orderId; }
 
-    public double calculateTotal() {
-        double total = 0;
-        for (OrderItem item : items) {
-            total += item.getSubtotal();
-        }
-        return total;
-    }
+    public int getTableNumber() { return tableNumber; }
+    public void setTableNumber(int tableNumber) { this.tableNumber = tableNumber; }
 
-    public void addItem(OrderItem item)    { items.add(item); }
-    public void removeItem(OrderItem item) { items.remove(item); }
+    public List<OrderItem> getItems() { return items; }
+    public void setItems(List<OrderItem> items) { this.items = items; }
 
-    // Getters & Setters
-    public int getOrderId()                          { return orderId; }
-    public void setOrderId(int id)                   { this.orderId = id; }
+    public double getSubtotal() { return subtotal; }
+    public void setSubtotal(double subtotal) { this.subtotal = subtotal; }
 
-    public int getTableId()                          { return tableId; }
-    public void setTableId(int id)                   { this.tableId = id; }
+    public double getDiscountAmount() { return discountAmount; }
+    public void setDiscountAmount(double discountAmount) { this.discountAmount = discountAmount; }
 
-    public int getWaiterId()                         { return waiterId; }
-    public void setWaiterId(int id)                  { this.waiterId = id; }
+    public double getTaxAmount() { return taxAmount; }
+    public void setTaxAmount(double taxAmount) { this.taxAmount = taxAmount; }
 
-    public String getStatus()                        { return status; }
-    public void setStatus(String status)             { this.status = status; }
+    public double getTotalAmount() { return totalAmount; }
+    public void setTotalAmount(double totalAmount) { this.totalAmount = totalAmount; }
 
-    public LocalDateTime getOrderTime()              { return orderTime; }
-    public void setOrderTime(LocalDateTime time)     { this.orderTime = time; }
+    public String getPaymentMethod() { return paymentMethod; }
+    public void setPaymentMethod(String paymentMethod) { this.paymentMethod = paymentMethod; }
 
-    public String getSpecialInstructions()           { return specialInstructions; }
-    public void setSpecialInstructions(String instr) { this.specialInstructions = instr; }
+    public LocalDateTime getOrderTime() { return orderTime; }
+    public void setOrderTime(LocalDateTime orderTime) { this.orderTime = orderTime; }
 
-    public List<OrderItem> getItems()                { return items; }
-    public void setItems(List<OrderItem> items)      { this.items = items; }
-
-    @Override
-    public String toString() {
-        return "Order #" + orderId + " | Table: " + tableId + " | Status: " + status;
-    }
+    public String getStatus() { return status; }
+    public void setStatus(String status) { this.status = status; }
 }

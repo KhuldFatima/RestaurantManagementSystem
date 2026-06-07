@@ -1,55 +1,31 @@
 package Model;
 
 public class OrderItem {
-
-    private int orderItemId;
-    private int orderId;
     private int menuItemId;
-    private String menuItemName;
+    private String itemName;
     private int quantity;
     private double unitPrice;
-    private String notes;
 
     public OrderItem() {}
 
-    public OrderItem(int orderItemId, int orderId, int menuItemId,
-                     String menuItemName, int quantity, double unitPrice, String notes) {
-        this.orderItemId  = orderItemId;
-        this.orderId      = orderId;
-        this.menuItemId   = menuItemId;
-        this.menuItemName = menuItemName;
-        this.quantity     = quantity;
-        this.unitPrice    = unitPrice;
-        this.notes        = notes;
+    public OrderItem(int menuItemId, String itemName, int quantity, double unitPrice) {
+        this.menuItemId = menuItemId;
+        this.itemName = itemName;
+        this.quantity = quantity;
+        this.unitPrice = unitPrice;
     }
 
-    public double getSubtotal() {
-        return quantity * unitPrice;
-    }
+    public int getMenuItemId() { return menuItemId; }
+    public void setMenuItemId(int menuItemId) { this.menuItemId = menuItemId; }
 
-    public int getOrderItemId()              { return orderItemId; }
-    public void setOrderItemId(int id)       { this.orderItemId = id; }
+    public String getItemName() { return itemName; }
+    public void setItemName(String itemName) { this.itemName = itemName; }
 
-    public int getOrderId()                  { return orderId; }
-    public void setOrderId(int id)           { this.orderId = id; }
+    public int getQuantity() { return quantity; }
+    public void setQuantity(int quantity) { this.quantity = quantity; }
 
-    public int getMenuItemId()               { return menuItemId; }
-    public void setMenuItemId(int id)        { this.menuItemId = id; }
+    public double getUnitPrice() { return unitPrice; }
+    public void setUnitPrice(double unitPrice) { this.unitPrice = unitPrice; }
 
-    public String getMenuItemName()          { return menuItemName; }
-    public void setMenuItemName(String name) { this.menuItemName = name; }
-
-    public int getQuantity()                 { return quantity; }
-    public void setQuantity(int qty)         { this.quantity = qty; }
-
-    public double getUnitPrice()             { return unitPrice; }
-    public void setUnitPrice(double price)   { this.unitPrice = price; }
-
-    public String getNotes()                 { return notes; }
-    public void setNotes(String notes)       { this.notes = notes; }
-
-    @Override
-    public String toString() {
-        return menuItemName + " x" + quantity + " = Rs. " + getSubtotal();
-    }
+    public double getTotalPrice() { return this.unitPrice * this.quantity; }
 }
