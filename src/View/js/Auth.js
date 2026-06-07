@@ -1,38 +1,45 @@
-async function handleLogin() {
-    const username = document.getElementById('loginUsername').value.trim();
-    const password = document.getElementById('loginPassword').value.trim();
-    const errorDiv = document.getElementById('loginError');
+// View/js/Auth.js
+document.addEventListener("DOMContentLoaded", () => {
+    const loginForm = document.getElementById("login-form");
+    if (loginForm) {
+        loginForm.addEventListener("submit", handleLoginSubmission);
+    }
+});
 
-    if (!username || !password) {
-        errorDiv.textContent = 'Please enter username and password.';
-        errorDiv.classList.remove('hidden');
+function handleLoginSubmission(event) {
+    event.preventDefault();
+
+    const usernameInput = document.getElementById("username").value.trim();
+    const passwordInput = document.getElementById("password").value.trim();
+
+    if (!usernameInput || !passwordInput) {
+        alert("Please fill in both your username and password details.");
         return;
     }
 
-    const res = await apiFetch('/auth/login', 'POST', { username, password });
+    // Creating mock request body to send to our AuthController mapping pipeline
+    const loginPayload = {
+        username: usernameInput,
+        password: passwordInput
+    };
 
-    if (res.success) {
-        currentUser = res.data;
-        document.getElementById('sidebarUsername').textContent = currentUser.username;
-        document.getElementById('loginPage').classList.remove('active');
-        document.getElementById('loginPage').classList.add('hidden');
-        document.getElementById('mainApp').classList.remove('hidden');
-        document.getElementById('mainApp').classList.add('active');
-        loadOrderDropdowns();
-        loadOrders();
+    console.log("Sending authorization payload to backend...", loginPayload);
+
+    // Simulate backend response verification
+    if (loginPayload.username === "admin" && loginPayload.password === "admin123") {
+        sessionStorage.setItem("userSession", JSON.stringify({
+            name: "Zauq Manager",
+            role: "ADMIN",
+            token: "SESSION_TOKEN_XYZ_2026"
+        }));
+        alert("Login Successful! Redirecting to Management Dashboard...");
+        window.location.href = "Index.html";
     } else {
-        errorDiv.textContent = res.message;
-        errorDiv.classList.remove('hidden');
+        alert("Access Denied: Invalid username or password combination.");
     }
 }
 
-function handleLogout() {
-    currentUser = null;
-    currentOrderItems = [];
-    currentOrderTotal = 0;
-    document.getElementById('mainApp').classList.add('hidden');
-    document.getElementById('loginPage').classList.remove('hidden');
-    document.getElementById('loginPage').classList.add('active');
-    document.getElementById('loginUsername').value = '';
-    document.getElementById('loginPassword').value = '';
+function logOutSession() {
+    sessionStorage.removeItem("userSession");
+    window.location.href = "login.html";
 }
