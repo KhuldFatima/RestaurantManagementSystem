@@ -9,9 +9,14 @@ public class AuthService {
     public User authenticate(String username, String password) {
         User user = userRepository.findByUsername(username);
 
-        if (user != null && user.getPassword().equals(password)) {
+        if (user == null) {
+            return null;
+        }
+
+        if (user.getPassword().equals(password)) {
             return user;
         }
+
         return null;
     }
 }
