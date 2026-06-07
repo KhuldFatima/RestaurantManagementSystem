@@ -1,6 +1,7 @@
 package Controller;
 
 import Dto.LoginRequest;
+import Dto.LoginResponse;
 import Dto.ApiResponse;
 import Service.AuthService;
 import Model.User;
@@ -18,7 +19,14 @@ public class AuthController {
         User authenticatedUser = authService.authenticate(request.getUsername(), request.getPassword());
 
         if (authenticatedUser != null) {
-            return new ApiResponse("success", "Login successful! Welcome back, " + authenticatedUser.getName(), authenticatedUser);
+            // Wrap response in LoginResponse DTO — avoids exposing the hashed password field
+            LoginResponse loginResponse = new LoginResponse(
+                    null, // Token generation not implemented in this project scope
+                    authenticatedUser.getUsername(),
+                    authenticatedUser.getRole(),
+                    authenticatedUser.getName()
+            );
+            return new ApiResponse("success", "Login successful! Welcome back, " + authenticatedUser.getName(), loginResponse);
         } else {
             return new ApiResponse("fail", "Invalid username or password combinations.", null);
         }
