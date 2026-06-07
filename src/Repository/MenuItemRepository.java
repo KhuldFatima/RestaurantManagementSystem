@@ -20,13 +20,12 @@ public class MenuItemRepository {
              ResultSet rs = stmt.executeQuery()) {
 
             while (rs.next()) {
-                MenuItem item = new MenuItem(
+                items.add(new MenuItem(
                         rs.getInt("id"),
                         rs.getString("name"),
                         rs.getString("category"),
                         rs.getDouble("price")
-                );
-                items.add(item);
+                ));
             }
         } catch (SQLException e) {
             e.printStackTrace();

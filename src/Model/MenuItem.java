@@ -3,8 +3,10 @@ package Model;
 public class MenuItem {
     private int id;
     private String name;
-    private String category; // e.g., BBQ, Karahi, Rice, Drinks
-    private double price;    // in PKR
+    private String category; // e.g., "Karahi", "BBQ", "Rice", "Tandoor"
+    private double price;    // Base price in PKR
+
+    public MenuItem() {}
 
     public MenuItem(int id, String name, String category, double price) {
         this.id = id;
@@ -13,9 +15,15 @@ public class MenuItem {
         this.price = price;
     }
 
-    // Getters and Setters
     public int getId() { return id; }
+    public void setId(int id) { this.id = id; }
+
     public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
+
     public String getCategory() { return category; }
+    public void setCategory(String category) { this.category = category; }
+
     public double getPrice() { return price; }
+    public void setPrice(double price) { this.price = price; }
 }
