@@ -2,10 +2,10 @@ package Model;
 
 public class Table {
 
-    public static final String STATUS_AVAILABLE  = "Available";
-    public static final String STATUS_OCCUPIED   = "Occupied";
-    public static final String STATUS_RESERVED   = "Reserved";
-    public static final String STATUS_CLEANING   = "Cleaning";
+    public static final String STATUS_AVAILABLE  = "AVAILABLE";
+    public static final String STATUS_OCCUPIED   = "OCCUPIED";
+    public static final String STATUS_RESERVED   = "RESERVED";
+    public static final String STATUS_CLEANING   = "CLEANING";
 
     private int tableId;
     private int tableNumber;

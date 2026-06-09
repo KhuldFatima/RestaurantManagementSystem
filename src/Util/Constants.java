@@ -3,19 +3,19 @@ package Util;
 public class Constants {
 
     // User roles
-    public static final String ROLE_ADMIN   = "admin";
-    public static final String ROLE_WAITER  = "waiter";
-    public static final String ROLE_CASHIER = "cashier";
+    public static final String ROLE_ADMIN   = "ADMIN";
+    public static final String ROLE_WAITER  = "WAITER";
+    public static final String ROLE_CASHIER = "CASHIER";
 
     // Order status
-    public static final String ORDER_OPEN      = "open";
-    public static final String ORDER_PAID      = "paid";
-    public static final String ORDER_CANCELLED = "cancelled";
+    public static final String ORDER_OPEN      = "OPEN";
+    public static final String ORDER_PAID      = "PAID";
+    public static final String ORDER_CANCELLED = "CANCELLED";
 
     // Table status
-    public static final String TABLE_AVAILABLE = "available";
-    public static final String TABLE_OCCUPIED  = "occupied";
-    public static final String TABLE_RESERVED  = "reserved";
+    public static final String TABLE_AVAILABLE = "AVAILABLE";
+    public static final String TABLE_OCCUPIED  = "OCCUPIED";
+    public static final String TABLE_RESERVED  = "RESERVED";
 
     // Menu categories
     public static final String CAT_MAIN    = "Main Course";
