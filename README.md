@@ -14,4 +14,4 @@ A Java Spring Boot backend for managing restaurant operations like orders, table
 - Table status management (Available / Occupied / Reserved)
 - Customer registration with duplicate phone check
 - Role-based login (Admin, Waiter, Cashier, Manager)
-- Daily sales report — gross revenue, net revenue, discounts, tax
+- Daily sales report (gross revenue, net revenue, discounts, tax)
