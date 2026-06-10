@@ -16,17 +16,8 @@ public class OrderController {
             return new ApiResponse("fail", "Invalid transactional subtotal base.", null);
         }
 
-        if (request.getTableNumber() <= 0) {
-            return new ApiResponse("fail", "A valid table number is required to process the order.", null);
-        }
-
         try {
-            // Evaluates pricing thresholds, 16% taxes, and active promotional campaign cuts
-            boolean isSaved = orderService.processAndRecordOrder(
-                    request.getSubtotal(),
-                    request.getPaymentMethod(),
-                    request.getTableNumber()
-            );
+            boolean isSaved = orderService.processAndRecordOrder(request);
 
             if (isSaved) {
                 return new ApiResponse("success", "Order processed. Dispatched to Kitchen Display and Database Ledger.", null);

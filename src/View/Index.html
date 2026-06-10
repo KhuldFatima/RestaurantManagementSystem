@@ -1,310 +1,1105 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Zauq Restaurant Management System</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Nastaliq+Urdu:wght@400;700&display=swap" rel="stylesheet">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Zauq Restaurant — Management System</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Nastaliq+Urdu:wght@400;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
     <style>
+        /* ── TOKENS ── */
         :root {
-            --primary: #1e4620;
-            --accent: #d4af37;
-            --dark: #2c2c2c;
-            --light: #f9f9f9;
-        }
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f4f4f6; color: var(--dark); }
-
-        /* ── HEADER ── */
-        header {
-            background: var(--primary);
-            color: white;
-            padding: 28px 40px;
-            border-bottom: 4px solid var(--accent);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 32px;
-        }
-        .header-logo {
-            width: 110px;
-            height: 110px;
-            flex-shrink: 0;
-            filter: drop-shadow(0 4px 12px rgba(0,0,0,0.35));
-        }
-        .header-text {
-            text-align: left;
-        }
-        .header-text h1 {
-            font-size: 2.4rem;
-            font-weight: 800;
-            letter-spacing: 4px;
-            color: #fff;
-            line-height: 1.1;
-            text-shadow: 0 2px 8px rgba(0,0,0,0.3);
-        }
-        .header-text .urdu-tagline {
-            font-family: 'Noto Nastaliq Urdu', serif;
-            font-size: 1.6rem;
-            color: var(--accent);
-            margin-top: 4px;
-            direction: rtl;
-            display: block;
-        }
-        .header-text p {
-            font-size: 0.9rem;
-            color: rgba(255,255,255,0.7);
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            margin-top: 6px;
-        }
-        .header-divider {
-            width: 2px;
-            height: 80px;
-            background: linear-gradient(to bottom, transparent, var(--accent), transparent);
-            flex-shrink: 0;
+          --green:        #1e4620;
+          --green-mid:    #2a5c2d;
+          --green-light:  #eaf2eb;
+          --gold:         #d4af37;
+          --gold-light:   #fdf4d0;
+          --danger:       #c0392b;
+          --danger-light: #fdf0ef;
+          --warn:         #e67e22;
+          --warn-light:   #fef3e2;
+          --text:         #1c1c1c;
+          --muted:        #6b7280;
+          --border:       #e4e7ec;
+          --surface:      #ffffff;
+          --bg:           #f3f5f0;
+          --radius:       10px;
+          --shadow:       0 2px 12px rgba(0,0,0,0.07);
         }
 
-        /* ── PROMO BANNER ── */
-        .promo-banner {
-            background: var(--accent);
-            color: #000;
-            text-align: center;
-            padding: 8px;
-            font-weight: bold;
-            font-size: 0.95rem;
+        /* ── RESET ── */
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); display: flex; min-height: 100vh; }
+
+        /* ── SIDEBAR ── */
+        .sidebar {
+          width: 230px;
+          background: var(--green);
+          display: flex;
+          flex-direction: column;
+          position: fixed;
+          top: 0; left: 0; bottom: 0;
+          z-index: 100;
+        }
+        .sidebar-brand {
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          padding: 22px 20px 18px;
+          border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        .brand-logo {
+          width: 44px; height: 44px; flex-shrink: 0;
+        }
+        .brand-name {
+          color: #fff;
+          font-size: 1.2rem;
+          font-weight: 700;
+          letter-spacing: 3px;
+        }
+        .brand-sub {
+          font-family: 'Noto Nastaliq Urdu', serif;
+          font-size: 0.85rem;
+          color: var(--gold);
+          direction: rtl;
+          display: block;
         }
 
-        /* ── LAYOUT ── */
-        .container {
-            display: flex;
-            max-width: 1200px;
-            margin: 20px auto;
-            gap: 20px;
-            padding: 0 15px;
+        .sidebar-nav { flex: 1; padding: 16px 10px; }
+        .nav-group-label {
+          font-size: 0.65rem;
+          font-weight: 600;
+          letter-spacing: 1.5px;
+          text-transform: uppercase;
+          color: rgba(255,255,255,0.35);
+          padding: 10px 10px 4px;
         }
-        .menu-section {
-            flex: 2;
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        .nav-item {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          padding: 10px 12px;
+          border-radius: 8px;
+          color: rgba(255,255,255,0.65);
+          cursor: pointer;
+          font-size: 0.875rem;
+          font-weight: 500;
+          margin-bottom: 2px;
+          transition: background 0.15s, color 0.15s;
+          border: none;
+          background: none;
+          width: 100%;
+          text-align: left;
         }
-        .cart-section {
-            flex: 1;
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-            height: fit-content;
+        .nav-item:hover { background: rgba(255,255,255,0.08); color: #fff; }
+        .nav-item.active { background: var(--gold); color: #000; font-weight: 600; }
+        .nav-icon { font-size: 1rem; width: 20px; text-align: center; flex-shrink: 0; }
+
+        .sidebar-footer {
+          padding: 16px 20px;
+          border-top: 1px solid rgba(255,255,255,0.1);
+        }
+        .user-chip {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          margin-bottom: 12px;
+        }
+        .user-avatar {
+          width: 34px; height: 34px;
+          background: var(--gold);
+          border-radius: 50%;
+          display: flex; align-items: center; justify-content: center;
+          font-weight: 700; font-size: 0.85rem; color: #000; flex-shrink: 0;
+        }
+        .user-name { color: #fff; font-size: 0.85rem; font-weight: 600; }
+        .user-role { color: rgba(255,255,255,0.5); font-size: 0.72rem; }
+        .btn-logout {
+          width: 100%;
+          padding: 8px;
+          background: rgba(255,255,255,0.08);
+          color: rgba(255,255,255,0.7);
+          border: 1px solid rgba(255,255,255,0.12);
+          border-radius: 6px;
+          cursor: pointer;
+          font-size: 0.8rem;
+          font-family: 'Inter', sans-serif;
+          transition: background 0.15s;
+        }
+        .btn-logout:hover { background: rgba(255,255,255,0.15); color: #fff; }
+
+        /* ── MAIN ── */
+        .main {
+          margin-left: 230px;
+          flex: 1;
+          display: flex;
+          flex-direction: column;
+          min-height: 100vh;
+        }
+
+        /* ── TOP BAR ── */
+        .topbar {
+          background: var(--surface);
+          border-bottom: 1px solid var(--border);
+          padding: 14px 28px;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          position: sticky;
+          top: 0;
+          z-index: 50;
+        }
+        .topbar-title { font-size: 1.1rem; font-weight: 700; color: var(--text); }
+        .topbar-meta { font-size: 0.8rem; color: var(--muted); }
+        .promo-pill {
+          background: var(--gold-light);
+          color: #7a5f00;
+          border: 1px solid var(--gold);
+          border-radius: 20px;
+          padding: 5px 14px;
+          font-size: 0.78rem;
+          font-weight: 600;
+        }
+
+        /* ── PAGE ── */
+        .page { display: none; padding: 28px; }
+        .page.active { display: block; }
+
+        /* ── SECTION HEADER ── */
+        .page-header {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          margin-bottom: 24px;
+        }
+        .page-header h2 { font-size: 1.4rem; font-weight: 700; }
+        .page-header p { font-size: 0.85rem; color: var(--muted); margin-top: 2px; }
+
+        /* ── CARD ── */
+        .card {
+          background: var(--surface);
+          border-radius: var(--radius);
+          box-shadow: var(--shadow);
+          border: 1px solid var(--border);
+        }
+        .card-body { padding: 20px; }
+        .card-header {
+          padding: 16px 20px;
+          border-bottom: 1px solid var(--border);
+          font-weight: 600;
+          font-size: 0.95rem;
+          display: flex;
+          align-items: center;
+          gap: 8px;
+        }
+
+        /* ── STAT GRID ── */
+        .stat-grid {
+          display: grid;
+          grid-template-columns: repeat(4, 1fr);
+          gap: 16px;
+          margin-bottom: 24px;
+        }
+        .stat-card {
+          background: var(--surface);
+          border-radius: var(--radius);
+          box-shadow: var(--shadow);
+          border: 1px solid var(--border);
+          padding: 20px;
+        }
+        .stat-label { font-size: 0.75rem; color: var(--muted); font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; }
+        .stat-value { font-size: 1.6rem; font-weight: 700; margin: 6px 0 2px; color: var(--green); }
+        .stat-sub { font-size: 0.78rem; color: var(--muted); }
+
+        /* ── BUTTONS ── */
+        .btn {
+          padding: 9px 18px;
+          border-radius: 7px;
+          border: none;
+          cursor: pointer;
+          font-size: 0.875rem;
+          font-weight: 600;
+          font-family: 'Inter', sans-serif;
+          transition: all 0.15s;
+          display: inline-flex;
+          align-items: center;
+          gap: 6px;
+        }
+        .btn-primary { background: var(--green); color: #fff; }
+        .btn-primary:hover { background: var(--green-mid); }
+        .btn-gold { background: var(--gold); color: #000; }
+        .btn-gold:hover { background: #c09e28; }
+        .btn-danger { background: var(--danger-light); color: var(--danger); }
+        .btn-danger:hover { background: var(--danger); color: #fff; }
+        .btn-sm { padding: 6px 12px; font-size: 0.78rem; }
+        .btn-full { width: 100%; justify-content: center; padding: 12px; font-size: 1rem; }
+
+        /* ── FORM ── */
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+        .form-group { margin-bottom: 14px; }
+        .form-group label {
+          display: block;
+          font-size: 0.78rem;
+          font-weight: 600;
+          color: var(--muted);
+          text-transform: uppercase;
+          letter-spacing: 0.5px;
+          margin-bottom: 5px;
+        }
+        .form-group input,
+        .form-group select {
+          width: 100%;
+          padding: 9px 12px;
+          border: 1.5px solid var(--border);
+          border-radius: 7px;
+          font-size: 0.875rem;
+          font-family: 'Inter', sans-serif;
+          color: var(--text);
+          background: var(--surface);
+          outline: none;
+          transition: border-color 0.15s;
+        }
+        .form-group input:focus,
+        .form-group select:focus { border-color: var(--green); }
+
+        /* ── ORDER LAYOUT ── */
+        .order-layout {
+          display: grid;
+          grid-template-columns: 1fr 380px;
+          gap: 20px;
+          align-items: start;
         }
 
         /* ── MENU GRID ── */
         .menu-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-            gap: 15px;
-            margin-top: 15px;
+          display: grid;
+          grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+          gap: 12px;
         }
         .menu-card {
-            border: 1px solid #e1e1e1;
-            padding: 15px;
-            border-radius: 6px;
-            text-align: center;
-            transition: 0.2s;
+          background: var(--surface);
+          border: 1.5px solid var(--border);
+          border-radius: var(--radius);
+          padding: 14px;
+          cursor: pointer;
+          transition: all 0.15s;
+          text-align: center;
         }
-        .menu-card:hover { border-color: var(--primary); transform: translateY(-2px); }
-        .menu-card h4 { margin: 10px 0 5px 0; font-size: 1.1rem; }
-        .price { color: var(--primary); font-weight: bold; margin-bottom: 10px; }
-
-        /* ── BUTTONS ── */
-        .btn {
-            background: var(--primary);
-            color: white;
-            border: none;
-            padding: 8px 15px;
-            border-radius: 4px;
-            cursor: pointer;
-            width: 100%;
-            font-weight: bold;
+        .menu-card:hover { border-color: var(--green); transform: translateY(-2px); box-shadow: 0 4px 14px rgba(0,0,0,0.09); }
+        .menu-card-emoji { font-size: 1.6rem; margin-bottom: 6px; }
+        .menu-card h4 { font-size: 0.875rem; font-weight: 600; margin-bottom: 3px; line-height: 1.3; }
+        .menu-card .cat-tag {
+          font-size: 0.7rem;
+          color: var(--muted);
+          background: var(--bg);
+          border-radius: 4px;
+          padding: 2px 6px;
+          display: inline-block;
+          margin-bottom: 8px;
         }
-        .btn:hover { background: #153317; }
-        .btn-remove {
-            background: #ffeaea;
-            color: #c0392b;
-            border: none;
-            padding: 4px 10px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 0.8rem;
-            font-weight: bold;
-            width: auto;
-            margin-left: 8px;
-        }
-        .btn-remove:hover { background: #c0392b; color: white; }
+        .menu-card .price { color: var(--green); font-weight: 700; font-size: 0.95rem; margin-bottom: 10px; }
+        .menu-card .btn { font-size: 0.78rem; padding: 6px 0; width: 100%; }
 
         /* ── CART ── */
+        .cart-sticky { position: sticky; top: 80px; }
+        .cart-items-list { min-height: 60px; max-height: 300px; overflow-y: auto; margin-bottom: 14px; }
         .cart-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 10px;
-            padding-bottom: 10px;
-            border-bottom: 1px solid #eee;
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          padding: 9px 0;
+          border-bottom: 1px solid var(--border);
         }
+        .cart-item:last-child { border-bottom: none; }
         .cart-item-info { flex: 1; }
+        .cart-item-info strong { font-size: 0.85rem; font-weight: 600; display: block; }
+        .cart-item-info small { color: var(--muted); font-size: 0.75rem; }
+        .cart-item-price { font-size: 0.88rem; font-weight: 700; color: var(--green); white-space: nowrap; }
+        .cart-empty { text-align: center; color: var(--muted); font-size: 0.85rem; padding: 20px 0; }
 
-        /* ── BILL SUMMARY ── */
-        .summary-row {
-            display: flex;
-            justify-content: space-between;
-            margin: 8px 0;
-            font-size: 0.95rem;
+        .bill-row {
+          display: flex;
+          justify-content: space-between;
+          font-size: 0.875rem;
+          padding: 6px 0;
+          color: var(--muted);
         }
-        .total-row {
-            font-size: 1.2rem;
-            font-weight: bold;
-            color: var(--primary);
-            border-top: 2px dashed #ccc;
-            padding-top: 10px;
+        .bill-row.discount { color: var(--danger); font-weight: 600; }
+        .bill-row.total {
+          font-size: 1.05rem;
+          font-weight: 700;
+          color: var(--green);
+          border-top: 2px dashed var(--border);
+          margin-top: 6px;
+          padding-top: 10px;
         }
-        .discount-active { color: #c0392b; font-weight: bold; }
 
-        /* ── FORM ELEMENTS ── */
-        select, input {
-            width: 100%;
-            padding: 8px;
-            margin: 5px 0 15px 0;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            box-sizing: border-box;
+        /* ── TABLES GRID ── */
+        .tables-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+          gap: 14px;
         }
+        .table-card {
+          background: var(--surface);
+          border-radius: var(--radius);
+          box-shadow: var(--shadow);
+          border: 1px solid var(--border);
+          padding: 20px 16px;
+          text-align: center;
+          cursor: pointer;
+          transition: transform 0.15s, box-shadow 0.15s;
+          border-top: 4px solid var(--green);
+        }
+        .table-card:hover { transform: translateY(-3px); box-shadow: 0 6px 20px rgba(0,0,0,0.1); }
+        .table-card.occupied { border-top-color: var(--danger); }
+        .table-card.reserved { border-top-color: var(--warn); }
+        .table-card.cleaning { border-top-color: var(--muted); }
+        .table-num { font-size: 2rem; font-weight: 800; color: var(--text); }
+        .table-cap { font-size: 0.75rem; color: var(--muted); margin: 4px 0 10px; }
+
+        /* ── BADGES ── */
+        .badge {
+          display: inline-block;
+          padding: 3px 10px;
+          border-radius: 20px;
+          font-size: 0.72rem;
+          font-weight: 700;
+          text-transform: uppercase;
+          letter-spacing: 0.5px;
+        }
+        .badge-available { background: var(--green-light); color: var(--green); }
+        .badge-occupied  { background: var(--danger-light); color: var(--danger); }
+        .badge-reserved  { background: var(--warn-light); color: var(--warn); }
+        .badge-cleaning  { background: #f0f0f0; color: #555; }
+
+        /* ── REPORT ── */
+        .report-grid {
+          display: grid;
+          grid-template-columns: repeat(2, 1fr);
+          gap: 16px;
+        }
+        .report-metric {
+          background: var(--surface);
+          border-radius: var(--radius);
+          border: 1px solid var(--border);
+          padding: 24px;
+          display: flex;
+          align-items: center;
+          gap: 16px;
+        }
+        .metric-icon {
+          width: 48px; height: 48px;
+          border-radius: 12px;
+          display: flex; align-items: center; justify-content: center;
+          font-size: 1.4rem;
+          flex-shrink: 0;
+        }
+        .icon-green  { background: var(--green-light); }
+        .icon-gold   { background: var(--gold-light); }
+        .icon-danger { background: var(--danger-light); }
+        .icon-blue   { background: #e8f0fe; }
+        .metric-label { font-size: 0.78rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600; }
+        .metric-value { font-size: 1.5rem; font-weight: 700; color: var(--text); margin-top: 4px; }
+
+        /* ── DATA TABLE ── */
+        .table-wrap { overflow-x: auto; }
+        table { width: 100%; border-collapse: collapse; font-size: 0.875rem; }
+        thead th {
+          background: var(--bg);
+          padding: 10px 14px;
+          text-align: left;
+          font-size: 0.72rem;
+          font-weight: 700;
+          text-transform: uppercase;
+          letter-spacing: 0.5px;
+          color: var(--muted);
+        }
+        tbody td { padding: 12px 14px; border-bottom: 1px solid var(--border); }
+        tbody tr:last-child td { border-bottom: none; }
+        tbody tr:hover td { background: var(--bg); }
+
+        /* ── TOAST ── */
+        #toast {
+          position: fixed;
+          bottom: 28px; right: 28px;
+          background: var(--text);
+          color: #fff;
+          padding: 12px 20px;
+          border-radius: 8px;
+          font-size: 0.875rem;
+          font-weight: 500;
+          box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+          z-index: 9999;
+          opacity: 0;
+          transform: translateY(10px);
+          transition: all 0.25s;
+          pointer-events: none;
+        }
+        #toast.show { opacity: 1; transform: translateY(0); }
+        #toast.success { background: var(--green); }
+        #toast.error   { background: var(--danger); }
+
+        /* ── MODAL ── */
+        .modal-overlay {
+          display: none;
+          position: fixed; inset: 0;
+          background: rgba(0,0,0,0.45);
+          z-index: 500;
+          align-items: center;
+          justify-content: center;
+        }
+        .modal-overlay.open { display: flex; }
+        .modal-box {
+          background: var(--surface);
+          border-radius: 14px;
+          padding: 28px;
+          width: 420px;
+          max-width: 90vw;
+          box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+        }
+        .modal-box h3 { font-size: 1.05rem; font-weight: 700; margin-bottom: 18px; }
+        .modal-actions { display: flex; gap: 10px; justify-content: flex-end; margin-top: 20px; }
+
+        /* ── UTIL ── */
+        .hidden { display: none !important; }
+        .text-muted { color: var(--muted); }
+        .mb-16 { margin-bottom: 16px; }
+        .gap-10 { display: flex; gap: 10px; align-items: center; }
     </style>
 </head>
 <body>
 
-<!-- ── HEADER WITH LOGO ── -->
-<header>
-    <!-- Inline SVG logo so it loads without an external file dependency -->
-    <svg class="header-logo" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg" aria-label="Zauq Restaurant Logo">
-        <defs>
-            <style>@import url('https://fonts.googleapis.com/css2?family=Noto+Nastaliq+Urdu:wght@700&display=swap');</style>
-        </defs>
-        <circle cx="200" cy="200" r="190" fill="#1e4620" stroke="#d4af37" stroke-width="2.5"/>
-        <circle cx="200" cy="200" r="182" fill="none" stroke="#d4af37" stroke-width="1"/>
-        <circle cx="200" cy="200" r="170" fill="#fdf8ef"/>
-        <circle cx="200" cy="200" r="163" fill="none" stroke="#d4af37" stroke-width="1.5"/>
-        <circle cx="200" cy="200" r="155" fill="#1e4620"/>
-        <circle cx="200" cy="200" r="147" fill="none" stroke="#d4af37" stroke-width="0.8" stroke-dasharray="4 3"/>
-        <g fill="#d4af37" opacity="0.9">
-            <ellipse cx="200" cy="15" rx="4" ry="8" transform="rotate(0 200 200)"/>
-            <ellipse cx="200" cy="15" rx="4" ry="8" transform="rotate(30 200 200)"/>
-            <ellipse cx="200" cy="15" rx="4" ry="8" transform="rotate(60 200 200)"/>
-            <ellipse cx="200" cy="15" rx="4" ry="8" transform="rotate(90 200 200)"/>
-            <ellipse cx="200" cy="15" rx="4" ry="8" transform="rotate(120 200 200)"/>
-            <ellipse cx="200" cy="15" rx="4" ry="8" transform="rotate(150 200 200)"/>
-            <ellipse cx="200" cy="15" rx="4" ry="8" transform="rotate(180 200 200)"/>
-            <ellipse cx="200" cy="15" rx="4" ry="8" transform="rotate(210 200 200)"/>
-            <ellipse cx="200" cy="15" rx="4" ry="8" transform="rotate(240 200 200)"/>
-            <ellipse cx="200" cy="15" rx="4" ry="8" transform="rotate(270 200 200)"/>
-            <ellipse cx="200" cy="15" rx="4" ry="8" transform="rotate(300 200 200)"/>
-            <ellipse cx="200" cy="15" rx="4" ry="8" transform="rotate(330 200 200)"/>
-        </g>
-        <g transform="translate(200,200)">
-            <polygon points="0,-60 14,-14 60,0 14,14 0,60 -14,14 -60,0 -14,-14" fill="none" stroke="#d4af37" stroke-width="0.8" opacity="0.45"/>
-            <polygon points="0,-60 14,-14 60,0 14,14 0,60 -14,14 -60,0 -14,-14" fill="none" stroke="#d4af37" stroke-width="0.8" opacity="0.45" transform="rotate(45)"/>
-        </g>
-        <!-- ذوق -->
-        <text x="200" y="226" text-anchor="middle" font-family="'Noto Nastaliq Urdu', serif" font-size="100" font-weight="700" fill="#d4af37">ذوق</text>
-        <path id="tA" d="M 42,200 A 158,158 0 0,1 358,200" fill="none"/>
-        <text font-family="'Segoe UI',Arial,sans-serif" font-size="14" fill="#d4af37" font-weight="500" letter-spacing="6">
-            <textPath href="#tA" startOffset="50%" text-anchor="middle">Z A U Q</textPath>
-        </text>
-        <path id="bA" d="M 43,206 A 157,157 0 0,0 357,206" fill="none"/>
-        <text font-family="'Segoe UI',Arial,sans-serif" font-size="12" fill="#d4af37" font-weight="500" letter-spacing="3.5">
-            <textPath href="#bA" startOffset="50%" text-anchor="middle">R E S T A U R A N T</textPath>
-        </text>
-        <g fill="#d4af37">
-            <polygon points="200,48  203,53  200,58  197,53" opacity="0.9"/>
-            <polygon points="200,342 203,347 200,352 197,347" opacity="0.9"/>
-        </g>
-        <g stroke="#d4af37" stroke-width="1.2" fill="none" opacity="0.5">
-            <line x1="122" y1="172" x2="122" y2="228"/>
-            <line x1="115" y1="172" x2="115" y2="188"/>
-            <line x1="119" y1="172" x2="119" y2="188"/>
-            <line x1="122" y1="172" x2="122" y2="188"/>
-            <line x1="126" y1="172" x2="126" y2="188"/>
-            <path d="M115 188 Q120 195 126 188"/>
-            <line x1="278" y1="198" x2="278" y2="228"/>
-            <ellipse cx="278" cy="185" rx="9" ry="12"/>
-        </g>
-    </svg>
-
-    <div class="header-divider"></div>
-
-    <div class="header-text">
-        <h1>ZAUQ</h1>
-        <span class="urdu-tagline">ذوق ریسٹورنٹ</span>
-        <p>Premium Pakistani Culinary Experience</p>
+<!-- ════════════════════════════
+     SIDEBAR
+═════════════════════════════ -->
+<aside class="sidebar">
+    <div class="sidebar-brand">
+        <svg class="brand-logo" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="200" cy="200" r="190" fill="#1e4620" stroke="#d4af37" stroke-width="4"/>
+            <circle cx="200" cy="200" r="170" fill="#fdf8ef"/>
+            <circle cx="200" cy="200" r="155" fill="#1e4620"/>
+            <g fill="#d4af37" opacity="0.9">
+                <ellipse cx="200" cy="15" rx="4" ry="8" transform="rotate(0 200 200)"/>
+                <ellipse cx="200" cy="15" rx="4" ry="8" transform="rotate(45 200 200)"/>
+                <ellipse cx="200" cy="15" rx="4" ry="8" transform="rotate(90 200 200)"/>
+                <ellipse cx="200" cy="15" rx="4" ry="8" transform="rotate(135 200 200)"/>
+                <ellipse cx="200" cy="15" rx="4" ry="8" transform="rotate(180 200 200)"/>
+                <ellipse cx="200" cy="15" rx="4" ry="8" transform="rotate(225 200 200)"/>
+                <ellipse cx="200" cy="15" rx="4" ry="8" transform="rotate(270 200 200)"/>
+                <ellipse cx="200" cy="15" rx="4" ry="8" transform="rotate(315 200 200)"/>
+            </g>
+            <text x="200" y="230" text-anchor="middle" font-family="'Noto Nastaliq Urdu',serif" font-size="110" font-weight="700" fill="#d4af37">ذوق</text>
+        </svg>
+        <div>
+            <div class="brand-name">ZAUQ</div>
+            <span class="brand-sub">ریسٹورنٹ</span>
+        </div>
     </div>
-</header>
 
-<!-- ── PROMO BANNER ── -->
-<div class="promo-banner">
-    ✨ 10% off on Askari &amp; Meezan Cards &nbsp;|&nbsp; 5% off on the First Wednesday of the Month! &nbsp;(16% GST applies)
+    <nav class="sidebar-nav">
+        <div class="nav-group-label">Operations</div>
+        <button class="nav-item active" onclick="showPage('orders')" id="nav-orders">
+            <span class="nav-icon">🛒</span> New Order
+        </button>
+        <button class="nav-item" onclick="showPage('tables')" id="nav-tables">
+            <span class="nav-icon">🪑</span> Tables
+        </button>
+        <div class="nav-group-label" style="margin-top:10px;">Management</div>
+        <button class="nav-item" onclick="showPage('customers')" id="nav-customers">
+            <span class="nav-icon">👥</span> Customers
+        </button>
+        <button class="nav-item" onclick="showPage('reports')" id="nav-reports">
+            <span class="nav-icon">📊</span> Daily Report
+        </button>
+    </nav>
+
+    <div class="sidebar-footer">
+        <div class="user-chip">
+            <div class="user-avatar" id="user-avatar">Z</div>
+            <div>
+                <div class="user-name" id="user-display-name">Manager</div>
+                <div class="user-role" id="user-display-role">ADMIN</div>
+            </div>
+        </div>
+        <button class="btn-logout" onclick="logOutSession()">← Sign Out</button>
+    </div>
+</aside>
+
+<!-- ════════════════════════════
+     MAIN
+═════════════════════════════ -->
+<div class="main">
+
+    <!-- TOP BAR -->
+    <div class="topbar">
+        <div>
+            <div class="topbar-title" id="topbar-title">New Order</div>
+            <div class="topbar-meta" id="topbar-date"></div>
+        </div>
+        <div class="promo-pill">✨ Askari &amp; Meezan 10% off &nbsp;·&nbsp; First Wednesday 5% off &nbsp;·&nbsp; GST 16%</div>
+    </div>
+
+    <!-- ══════════ PAGE: ORDERS ══════════ -->
+    <div class="page active" id="page-orders">
+        <div class="page-header">
+            <div>
+                <h2>New Order</h2>
+                <p>Select items, configure discounts, and send to kitchen</p>
+            </div>
+        </div>
+
+        <div class="order-layout">
+
+            <!-- LEFT: MENU -->
+            <div>
+                <div class="card mb-16">
+                    <div class="card-header">🍽️ Traditional Menu</div>
+                    <div class="card-body">
+                        <div class="menu-grid" id="menu-container"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- RIGHT: CART -->
+            <div class="cart-sticky">
+                <div class="card">
+                    <div class="card-header">🧾 Current Order</div>
+                    <div class="card-body">
+
+                        <div class="cart-items-list" id="cart-items">
+                            <div class="cart-empty">No items added yet.</div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="table-number">Table Number</label>
+                            <input type="number" id="table-number" placeholder="e.g. 3" min="1" onchange="recalculateBill()" />
+                        </div>
+                        <div class="form-group">
+                            <label for="payment-method">Payment Method</label>
+                            <select id="payment-method" onchange="recalculateBill()">
+                                <option value="CASH">Cash</option>
+                                <option value="MEEZAN">Meezan Bank Card (10% off)</option>
+                                <option value="ASKARI">Askari Bank Card (10% off)</option>
+                                <option value="OTHER_CARD">Other Bank Card</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="order-date">Order Date</label>
+                            <input type="date" id="order-date" onchange="recalculateBill()" />
+                        </div>
+
+                        <div style="border-top: 1px solid var(--border); padding-top: 12px;">
+                            <div class="bill-row"><span>Subtotal</span><span id="bill-subtotal">PKR 0.00</span></div>
+                            <div class="bill-row discount"><span>Discount</span><span id="bill-discount">—</span></div>
+                            <div class="bill-row"><span>GST (16%)</span><span id="bill-tax">PKR 0.00</span></div>
+                            <div class="bill-row total"><span>Total Payable</span><span id="bill-total">PKR 0.00</span></div>
+                        </div>
+
+                        <button class="btn btn-primary btn-full" style="margin-top:14px;" onclick="sendCartToCheckout()">
+                            ✅ Place Order
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- ══════════ PAGE: TABLES ══════════ -->
+    <div class="page" id="page-tables">
+        <div class="page-header">
+            <div>
+                <h2>Floor Map</h2>
+                <p>Click any table to cycle its status</p>
+            </div>
+            <div class="gap-10">
+                <span><span class="badge badge-available">Available</span></span>
+                <span><span class="badge badge-occupied">Occupied</span></span>
+                <span><span class="badge badge-reserved">Reserved</span></span>
+            </div>
+        </div>
+        <div class="tables-grid" id="table-grid-container"></div>
+    </div>
+
+    <!-- ══════════ PAGE: CUSTOMERS ══════════ -->
+    <div class="page" id="page-customers">
+        <div class="page-header">
+            <div>
+                <h2>Customers</h2>
+                <p>Register new customer accounts</p>
+            </div>
+        </div>
+
+        <div style="display:grid; grid-template-columns: 360px 1fr; gap:20px; align-items:start;">
+
+            <!-- Register Form -->
+            <div class="card">
+                <div class="card-header">👤 Register Customer</div>
+                <div class="card-body">
+                    <div class="form-group">
+                        <label for="cust-name">Full Name</label>
+                        <input type="text" id="cust-name" placeholder="e.g. Ahmed Khan" />
+                    </div>
+                    <div class="form-group">
+                        <label for="cust-phone">Phone Number</label>
+                        <input type="tel" id="cust-phone" placeholder="e.g. 0300-1234567" />
+                    </div>
+                    <div class="form-group">
+                        <label for="cust-email">Email (optional)</label>
+                        <input type="email" id="cust-email" placeholder="e.g. ahmed@email.com" />
+                    </div>
+                    <button class="btn btn-primary btn-full" onclick="registerCustomer()">Register Customer</button>
+                </div>
+            </div>
+
+            <!-- Registered list -->
+            <div class="card">
+                <div class="card-header">📋 Registered Customers</div>
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Name</th>
+                            <th>Phone</th>
+                            <th>Email</th>
+                        </tr>
+                        </thead>
+                        <tbody id="customer-table-body">
+                        <tr><td colspan="4" style="text-align:center; color:var(--muted); padding:20px;">No customers registered yet.</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- ══════════ PAGE: REPORTS ══════════ -->
+    <div class="page" id="page-reports" id="reports-dashboard">
+        <div class="page-header">
+            <div>
+                <h2>Daily Sales Report</h2>
+                <p>Today's financial performance at a glance</p>
+            </div>
+            <button class="btn btn-gold" onclick="loadDailyOperationalMetrics()">🔄 Refresh</button>
+        </div>
+
+        <div class="report-grid mb-16" style="margin-bottom:20px;">
+            <div class="report-metric">
+                <div class="metric-icon icon-green">💰</div>
+                <div>
+                    <div class="metric-label">Gross Revenue</div>
+                    <div class="metric-value" id="report-gross">PKR —</div>
+                </div>
+            </div>
+            <div class="report-metric">
+                <div class="metric-icon icon-blue">📈</div>
+                <div>
+                    <div class="metric-label">Net Revenue</div>
+                    <div class="metric-value" id="report-net">PKR —</div>
+                </div>
+            </div>
+            <div class="report-metric">
+                <div class="metric-icon icon-danger">🏷️</div>
+                <div>
+                    <div class="metric-label">Discounts Given</div>
+                    <div class="metric-value" id="report-discounts">PKR —</div>
+                </div>
+            </div>
+            <div class="report-metric">
+                <div class="metric-icon icon-gold">🧾</div>
+                <div>
+                    <div class="metric-label">Tax Collected (GST)</div>
+                    <div class="metric-value" id="report-tax">PKR —</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Orders placed this session -->
+        <div class="card">
+            <div class="card-header">🗂️ Orders This Session</div>
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Time</th>
+                        <th>Table</th>
+                        <th>Payment</th>
+                        <th>Subtotal</th>
+                        <th>Discount</th>
+                        <th>GST</th>
+                        <th>Total</th>
+                    </tr>
+                    </thead>
+                    <tbody id="orders-log-body">
+                    <tr><td colspan="8" style="text-align:center; color:var(--muted); padding:20px;">No orders placed yet this session.</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div><!-- /main -->
+
+<!-- ════════ TOAST ════════ -->
+<div id="toast"></div>
+
+<!-- ════════ CONFIRM MODAL ════════ -->
+<div class="modal-overlay" id="confirm-modal">
+    <div class="modal-box">
+        <h3 id="modal-title">Confirm Action</h3>
+        <p id="modal-body" style="color:var(--muted); font-size:0.9rem;"></p>
+        <div class="modal-actions">
+            <button class="btn" style="background:var(--bg); color:var(--text);" onclick="closeModal()">Cancel</button>
+            <button class="btn btn-primary" id="modal-confirm-btn">Confirm</button>
+        </div>
+    </div>
 </div>
 
-<!-- ── MAIN CONTENT ── -->
-<div class="container">
-    <div class="menu-section">
-        <h2>Traditional Menu</h2>
-        <div class="menu-grid" id="menu-container"></div>
-    </div>
+<!-- ══════════════════════════════════════
+     JAVASCRIPT
+════════════════════════════════════════ -->
+<script>
 
-    <div class="cart-section">
-        <h2>Current Order</h2>
-        <div id="cart-items">
-            <p style="color: #888; text-align: center;">No items selected yet.</p>
-        </div>
+    /* ── NAVIGATION ── */
+    const pageTitles = {
+      orders: 'New Order',
+      tables: 'Floor Map',
+      customers: 'Customers',
+      reports: 'Daily Report'
+    };
 
-        <label for="table-number"><strong>Table Number:</strong></label>
-        <input type="number" id="table-number" placeholder="Enter table number" min="1" onchange="recalculateBill()">
+    function showPage(id) {
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+      document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+      document.getElementById('page-' + id).classList.add('active');
+      document.getElementById('nav-' + id).classList.add('active');
+      document.getElementById('topbar-title').textContent = pageTitles[id];
+      if (id === 'reports') loadDailyOperationalMetrics();
+      if (id === 'tables') renderFloorMap();
+    }
 
-        <label for="payment-method"><strong>Payment Method:</strong></label>
-        <select id="payment-method" onchange="recalculateBill()">
-            <option value="CASH">Cash on Delivery</option>
-            <option value="MEEZAN">Meezan Bank Card (10% Off)</option>
-            <option value="ASKARI">Askari Bank Card (10% Off)</option>
-            <option value="OTHER_CARD">Other Bank Card</option>
-        </select>
+    /* ── DATE ── */
+    function initDate() {
+      const now = new Date();
+      const opts = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+      document.getElementById('topbar-date').textContent = now.toLocaleDateString('en-PK', opts);
+      const dateInput = document.getElementById('order-date');
+      if (dateInput) dateInput.value = now.toISOString().split('T')[0];
+    }
 
-        <label for="order-date"><strong>Simulation Date:</strong></label>
-        <input type="date" id="order-date" onchange="recalculateBill()">
+    /* ── SESSION ── */
+    function initSession() {
+      const raw = sessionStorage.getItem('userSession');
+      if (raw) {
+        try {
+          const s = JSON.parse(raw);
+          document.getElementById('user-display-name').textContent = s.name || 'User';
+          document.getElementById('user-display-role').textContent = s.role || 'STAFF';
+          const initials = (s.name || 'U').split(' ').map(w => w[0]).join('').toUpperCase().slice(0, 2);
+          document.getElementById('user-avatar').textContent = initials;
+        } catch(e) {}
+      }
+    }
 
-        <div class="summary-row">
-            <span>Subtotal:</span>
-            <span id="bill-subtotal">PKR 0.00</span>
-        </div>
-        <div class="summary-row discount-active">
-            <span>Discount Applied:</span>
-            <span id="bill-discount">0%</span>
-        </div>
-        <div class="summary-row">
-            <span>GST (16%):</span>
-            <span id="bill-tax">PKR 0.00</span>
-        </div>
-        <div class="summary-row total-row">
-            <span>Total Payable:</span>
-            <span id="bill-total">PKR 0.00</span>
-        </div>
+    function logOutSession() {
+      sessionStorage.removeItem('userSession');
+      toast('Signed out successfully.', 'success');
+      setTimeout(() => { window.location.href = 'login.html'; }, 800);
+    }
 
-        <button class="btn" style="margin-top: 15px;" onclick="sendCartToCheckout()">Place Order</button>
-    </div>
-</div>
+    /* ── TOAST ── */
+    function toast(msg, type = '') {
+      const el = document.getElementById('toast');
+      el.textContent = msg;
+      el.className = 'show ' + type;
+      clearTimeout(el._t);
+      el._t = setTimeout(() => { el.className = ''; }, 3000);
+    }
 
-<script src="js/Menu.js"></script>
-<script src="js/Orders.js"></script>
+    /* ── MODAL ── */
+    function openModal(title, body, onConfirm) {
+      document.getElementById('modal-title').textContent = title;
+      document.getElementById('modal-body').textContent = body;
+      document.getElementById('modal-confirm-btn').onclick = () => { closeModal(); onConfirm(); };
+      document.getElementById('confirm-modal').classList.add('open');
+    }
+    function closeModal() {
+      document.getElementById('confirm-modal').classList.remove('open');
+    }
+
+    /* ════════════════════════
+       MENU & ORDERS
+    ════════════════════════ */
+    const menuItems = [
+      { id: 1, name: "Chicken Makhni Handi (Half)", category: "Karahi",  price: 1450, emoji: "🍲" },
+      { id: 2, name: "Mutton Peshawari Karahi (Full)", category: "Karahi", price: 3200, emoji: "🥘" },
+      { id: 3, name: "Beef Seekh Kebab (4 Pcs)",    category: "BBQ",    price: 850,  emoji: "🍢" },
+      { id: 4, name: "Chicken Tikka (Leg Piece)",   category: "BBQ",    price: 420,  emoji: "🍗" },
+      { id: 5, name: "Mutton Dum Biryani",          category: "Rice",   price: 780,  emoji: "🍛" },
+      { id: 6, name: "Garlic / Roghni Naan",        category: "Tandoor",price: 90,   emoji: "🫓" },
+      { id: 7, name: "Mint Raita & Fresh Salad",    category: "Sides",  price: 180,  emoji: "🥗" },
+      { id: 8, name: "Pakola / Soft Drink Can",     category: "Drinks", price: 120,  emoji: "🥤" }
+    ];
+
+    let cart = [];
+    let orderLog = [];
+    let orderCounter = 1;
+
+    function renderMenu() {
+      const container = document.getElementById('menu-container');
+      container.innerHTML = '';
+      menuItems.forEach(item => {
+        const card = document.createElement('div');
+        card.className = 'menu-card';
+        card.innerHTML = `
+          <div class="menu-card-emoji">${item.emoji}</div>
+          <h4>${item.name}</h4>
+          <span class="cat-tag">${item.category}</span>
+          <div class="price">PKR ${item.price.toLocaleString()}</div>
+          <button class="btn btn-primary" onclick="addToCart(${item.id})">+ Add</button>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    function addToCart(id) {
+      const item = menuItems.find(i => i.id === id);
+      const existing = cart.find(c => c.id === id);
+      if (existing) { existing.quantity += 1; }
+      else { cart.push({ ...item, quantity: 1 }); }
+      renderCart();
+      toast(item.name + ' added to order.', 'success');
+    }
+
+    function removeFromCart(id) {
+      cart = cart.filter(c => c.id !== id);
+      renderCart();
+    }
+
+    function renderCart() {
+      const container = document.getElementById('cart-items');
+      if (cart.length === 0) {
+        container.innerHTML = '<div class="cart-empty">No items added yet.</div>';
+        recalculateBill();
+        return;
+      }
+      container.innerHTML = '';
+      cart.forEach(item => {
+        const row = document.createElement('div');
+        row.className = 'cart-item';
+        row.innerHTML = `
+          <div class="cart-item-info">
+            <strong>${item.name}</strong>
+            <small>PKR ${item.price.toLocaleString()} × ${item.quantity}</small>
+          </div>
+          <span class="cart-item-price">PKR ${(item.price * item.quantity).toLocaleString()}</span>
+          <button class="btn btn-danger btn-sm" style="margin-left:8px;" onclick="removeFromCart(${item.id})">✕</button>
+        `;
+        container.appendChild(row);
+      });
+      recalculateBill();
+    }
+
+    function recalculateBill() {
+      const subtotal = cart.reduce((s, i) => s + i.price * i.quantity, 0);
+      const paymentMethod = document.getElementById('payment-method').value;
+      const dateVal = document.getElementById('order-date').value;
+
+      let discountPct = 0;
+      if (paymentMethod === 'MEEZAN' || paymentMethod === 'ASKARI') discountPct += 0.10;
+      if (dateVal) {
+        const d = new Date(dateVal);
+        if (d.getDay() === 3 && d.getDate() <= 7) discountPct += 0.05;
+      }
+
+      const discountAmt = subtotal * discountPct;
+      const afterDiscount = subtotal - discountAmt;
+      const tax = afterDiscount * 0.16;
+      const total = afterDiscount + tax;
+
+      document.getElementById('bill-subtotal').textContent = 'PKR ' + subtotal.toLocaleString('en-PK', { minimumFractionDigits: 2 });
+      document.getElementById('bill-discount').textContent = discountPct > 0
+        ? `${(discountPct * 100).toFixed(0)}% (−PKR ${discountAmt.toLocaleString('en-PK', { minimumFractionDigits: 2 })})`
+        : '—';
+      document.getElementById('bill-tax').textContent = 'PKR ' + tax.toLocaleString('en-PK', { minimumFractionDigits: 2 });
+      document.getElementById('bill-total').textContent = 'PKR ' + total.toLocaleString('en-PK', { minimumFractionDigits: 2 });
+
+      return { subtotal, discountPct, discountAmt, afterDiscount, tax, total };
+    }
+
+    function sendCartToCheckout() {
+      if (cart.length === 0) { toast('Add at least one item to the order.', 'error'); return; }
+      const tableNum = document.getElementById('table-number').value;
+      if (!tableNum || tableNum < 1) { toast('Please enter a valid table number.', 'error'); return; }
+
+      const payment = document.getElementById('payment-method').value;
+      const bill = recalculateBill();
+
+      openModal(
+        'Confirm Order',
+        `Table ${tableNum} — Total PKR ${bill.total.toLocaleString('en-PK', { minimumFractionDigits: 2 })} via ${payment}. Send to kitchen?`,
+        () => {
+          // Log to session orders
+          const now = new Date();
+          const timeStr = now.toLocaleTimeString('en-PK', { hour: '2-digit', minute: '2-digit' });
+          orderLog.push({
+            id: orderCounter++,
+            time: timeStr,
+            table: tableNum,
+            payment,
+            subtotal: bill.subtotal,
+            discount: bill.discountAmt,
+            tax: bill.tax,
+            total: bill.total
+          });
+
+          toast('✅ Order placed! Sent to kitchen.', 'success');
+          cart = [];
+          renderCart();
+
+          // Mark table as occupied
+          const tbl = restaurantTables.find(t => t.tableNumber === parseInt(tableNum));
+          if (tbl) tbl.status = 'OCCUPIED';
+        }
+      );
+    }
+
+    /* ════════════════════════
+       TABLES
+    ════════════════════════ */
+    const restaurantTables = [
+      { tableNumber: 1, capacity: 4, status: 'AVAILABLE' },
+      { tableNumber: 2, capacity: 2, status: 'OCCUPIED'  },
+      { tableNumber: 3, capacity: 6, status: 'RESERVED'  },
+      { tableNumber: 4, capacity: 4, status: 'AVAILABLE' },
+      { tableNumber: 5, capacity: 8, status: 'AVAILABLE' },
+      { tableNumber: 6, capacity: 4, status: 'OCCUPIED'  }
+    ];
+
+    function renderFloorMap() {
+      const grid = document.getElementById('table-grid-container');
+      grid.innerHTML = '';
+      restaurantTables.forEach(t => {
+        const card = document.createElement('div');
+        const statusClass = t.status.toLowerCase();
+        card.className = 'table-card ' + statusClass;
+        card.innerHTML = `
+          <div class="table-num">T${t.tableNumber}</div>
+          <div class="table-cap">Seats ${t.capacity}</div>
+          <span class="badge badge-${statusClass}">${t.status}</span>
+          <br/><br/>
+          <button class="btn btn-sm" style="background:var(--bg); color:var(--text); width:100%;" onclick="toggleTableStatus(${t.tableNumber})">Change Status</button>
+        `;
+        grid.appendChild(card);
+      });
+    }
+
+    function toggleTableStatus(num) {
+      const t = restaurantTables.find(t => t.tableNumber === num);
+      if (!t) return;
+      const cycle = { AVAILABLE: 'OCCUPIED', OCCUPIED: 'RESERVED', RESERVED: 'AVAILABLE' };
+      const next = cycle[t.status] || 'AVAILABLE';
+      openModal(
+        'Update Table Status',
+        `Change Table ${num} from ${t.status} → ${next}?`,
+        () => {
+          t.status = next;
+          renderFloorMap();
+          toast(`Table ${num} is now ${next}.`, 'success');
+        }
+      );
+    }
+
+    /* ════════════════════════
+       CUSTOMERS
+    ════════════════════════ */
+    const customers = [];
+
+    function registerCustomer() {
+      const name  = document.getElementById('cust-name').value.trim();
+      const phone = document.getElementById('cust-phone').value.trim();
+      const email = document.getElementById('cust-email').value.trim();
+
+      if (!name)  { toast('Customer name is required.', 'error'); return; }
+      if (!phone) { toast('Phone number is required.', 'error'); return; }
+
+      const duplicate = customers.find(c => c.phone === phone);
+      if (duplicate) { toast('A customer with this phone already exists.', 'error'); return; }
+
+      customers.push({ id: customers.length + 1, name, phone, email });
+      renderCustomerTable();
+
+      document.getElementById('cust-name').value  = '';
+      document.getElementById('cust-phone').value = '';
+      document.getElementById('cust-email').value = '';
+
+      toast('Customer registered successfully!', 'success');
+    }
+
+    function renderCustomerTable() {
+      const tbody = document.getElementById('customer-table-body');
+      if (customers.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="4" style="text-align:center; color:var(--muted); padding:20px;">No customers registered yet.</td></tr>';
+        return;
+      }
+      tbody.innerHTML = customers.map(c => `
+        <tr>
+          <td>${c.id}</td>
+          <td><strong>${c.name}</strong></td>
+          <td>${c.phone}</td>
+          <td>${c.email || '<span style="color:var(--muted)">—</span>'}</td>
+        </tr>
+      `).join('');
+    }
+
+    /* ════════════════════════
+       REPORTS
+    ════════════════════════ */
+    function loadDailyOperationalMetrics() {
+      // Compile from session order log
+      const gross    = orderLog.reduce((s, o) => s + o.subtotal, 0);
+      const disc     = orderLog.reduce((s, o) => s + o.discount, 0);
+      const taxTotal = orderLog.reduce((s, o) => s + o.tax, 0);
+      const net      = orderLog.reduce((s, o) => s + o.total, 0);
+
+      const fmt = v => 'PKR ' + v.toLocaleString('en-PK', { minimumFractionDigits: 2 });
+      document.getElementById('report-gross').textContent     = fmt(gross);
+      document.getElementById('report-net').textContent       = fmt(net);
+      document.getElementById('report-discounts').textContent = fmt(disc);
+      document.getElementById('report-tax').textContent       = fmt(taxTotal);
+
+      // Orders log table
+      const tbody = document.getElementById('orders-log-body');
+      if (orderLog.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="8" style="text-align:center; color:var(--muted); padding:20px;">No orders placed yet this session.</td></tr>';
+        return;
+      }
+      tbody.innerHTML = orderLog.map(o => `
+        <tr>
+          <td>#${o.id}</td>
+          <td>${o.time}</td>
+          <td>Table ${o.table}</td>
+          <td>${o.payment}</td>
+          <td>PKR ${o.subtotal.toLocaleString('en-PK', { minimumFractionDigits: 2 })}</td>
+          <td style="color:var(--danger)">−PKR ${o.discount.toLocaleString('en-PK', { minimumFractionDigits: 2 })}</td>
+          <td>PKR ${o.tax.toLocaleString('en-PK', { minimumFractionDigits: 2 })}</td>
+          <td style="font-weight:700; color:var(--green)">PKR ${o.total.toLocaleString('en-PK', { minimumFractionDigits: 2 })}</td>
+        </tr>
+      `).join('');
+    }
+
+    /* ── INIT ── */
+    document.addEventListener('DOMContentLoaded', () => {
+      initDate();
+      initSession();
+      renderMenu();
+      renderFloorMap();
+    });
+</script>
 </body>
 </html>
